@@ -1,8 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    public const int MAX_ATTEMPTS = 3;
+
+    public AudioSource bgmusic;
+    public AudioSource soundfx;
+    public AudioClip talk;
+    public AudioClip explode;
+    public AudioClip cheer;
 
     public GameObject langScreen;
     public GameObject gameScreen;
@@ -23,18 +28,25 @@ public class GameManager : MonoBehaviour {
         gameScreen.SetActive(false);
         winScreen.SetActive(false);
         loseScreen.SetActive(false);
+        bgmusic.Stop();
+        soundfx.Stop();
     }
 
     public void NewGame()
     {
         gameScreen.SetActive(true);
+        bgmusic.volume = (attempts + 1.0f) / (MAX_ATTEMPTS + 3);
         correct = AnswersManager.Instance.SetTexts(attempts+1);
+        soundfx.Stop();
+        soundfx.clip = talk;
+        soundfx.Play();
     }
 
     public void SetLang(int i)
     {
         AnswersManager.Instance.languageIndex = i;
         langScreen.SetActive(false);
+        bgmusic.Play();
         NewGame();
     }
 
@@ -45,11 +57,21 @@ public class GameManager : MonoBehaviour {
         {
             gameScreen.SetActive(false);
             loseScreen.SetActive(true);
-        } else if (attempts == 3)
+            bgmusic.Stop();
+            soundfx.Stop();
+            soundfx.clip = explode;
+            soundfx.Play();
+        }
+        else if (attempts == MAX_ATTEMPTS)
         {
             gameScreen.SetActive(false);
             winScreen.SetActive(true);
-        } else
+            bgmusic.Stop();
+            soundfx.Stop();
+            soundfx.clip = cheer;
+            soundfx.Play();
+        }
+        else
         {
             NewGame();
         }
