@@ -25,7 +25,7 @@ public class AnswersManager : MonoBehaviour {
         int correctAnswer = Random.Range(0, options.Length);
         int sentence = Random.Range(0, SENTENCES_NUM)+1;
         titleText.text = LocalizationManager.GetTranslation("right" + stage + "." + sentence, false, 0, true, false, null, languages[languageIndex]);
-        titleText.isRightToLeftText = (languageIndex == 1);
+        titleText.isRightToLeftText = (languageIndex == 1 || languageIndex == 2);
         for (int i = 0; i < options.Length; i++)
         {
             int lng = i;// Random.Range(0, languages.Count - 1);
@@ -39,13 +39,8 @@ public class AnswersManager : MonoBehaviour {
             options[i].text = LocalizationManager.GetTranslation(type + stage + "." + sentence, false, 0, true, false, null, languages[lng]);
 
             // if hebrew set rtl
-            options[i].isRightToLeftText = (lng == 1);
+            options[i].isRightToLeftText = (lng == 1 || lng == 2);
         }
         return correctAnswer;
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
